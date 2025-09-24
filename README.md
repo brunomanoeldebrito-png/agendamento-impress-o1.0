@@ -6,7 +6,7 @@
 <title>Impressão Rápida</title>
 <style>
   body { font-family: Arial, sans-serif; background-color: #e0f7fa; margin: 0; padding: 0; }
-  .container { max-width: 720px; margin: 40px auto; background: #ffffff; padding: 40px; border-radius: 16px; box-shadow: none; }
+  .container { max-width: 720px; margin: 40px auto; background: #ffffff; padding: 40px; border-radius: 16px; }
   h1 { text-align: center; font-size: 32px; margin-bottom: 25px; }
   h2 { text-align: center; font-size: 24px; margin-bottom: 20px; color: #d32f2f; }
   label { display: block; margin: 15px 0 5px; font-weight: 600; }
@@ -15,14 +15,15 @@
   .checkbox input { margin-right: 10px; }
   .button { display: block; width: 100%; padding: 16px; margin-top: 25px; background: #00acc1; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.3s; }
   .button:hover { background: #00838f; }
-  .strike { text-decoration: line-through; color: #d32f2f; font-weight: bold; font-size: 16px; margin-top: 10px; }
+  .strike { text-decoration: line-through; color: #d32f2f; font-weight: bold; font-size: 16px; }
   .note { font-size: 13px; color: #555; margin-top: 6px; }
-  .aviso { color: #d32f2f; font-weight: bold; font-size: 15px; margin-top: 15px; text-align: center; }
-  table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+  .aviso-lateral { flex: 1; background: #fff3f3; border: 1px solid #f5c2c2; padding: 15px; border-radius: 8px; color: #d32f2f; font-weight: bold; font-size: 15px; text-align: center; }
+  table { width: 100%; border-collapse: collapse; }
   table, th, td { border: 1px solid #bbb; }
   th, td { padding: 10px; text-align: center; }
   #localizacao { display: none; margin-top: 15px; }
   .ocupado { background-color: #f8d7da; color: #721c24; }
+  .flex-container { display: flex; gap: 20px; align-items: flex-start; margin-top: 20px; }
 </style>
 </head>
 <body>
@@ -31,18 +32,30 @@
     <h2>🎉 Super Promoção 🎉</h2>
     <h1>Impressão Rápida</h1>
 
-    <table>
-      <thead><tr><th>Serviço</th><th>Preço</th></tr></thead>
-      <tbody>
-        <tr><td class="strike">Impressão Comum</td><td class="strike">R$ 3,50</td></tr>
-        <tr><td>Site Básico <br><small>(Obs: sem logo)</small></td><td>R$ 250,00</td></tr>
-        <tr><td>Cartão de Visita</td><td>R$ 100,00</td></tr>
-        <tr><td>Post no Instagram</td><td>R$ 30,00</td></tr>
-        <tr><td>Contrato / Negociação</td><td>—</td></tr>
-      </tbody>
-    </table>
+    <div class="flex-container">
+      <!-- Tabela de preços -->
+      <table style="flex:2;">
+        <thead>
+          <tr><th>Serviço</th><th>Preço</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="strike">Impressão Comum</td><td class="strike">R$ 3,50</td></tr>
+          <tr><td>Site Básico <br><small>(Obs: sem logo)</small></td><td>R$ 250,00</td></tr>
+          <tr><td>Cartão de Visita</td><td>R$ 100,00 + Frete R$ 70,00</td></tr>
+          <tr><td>Post no Instagram</td><td>R$ 30,00</td></tr>
+          <tr><td>Contrato / Negociação</td><td>—</td></tr>
+          <tr><td>Logo</td><td>R$ 20,00</td></tr>
+        </tbody>
+      </table>
 
-    <p class="aviso">⚠️ Impressão Comum e Xerox estão temporariamente indisponíveis.</p>
+      <!-- Aviso do lado -->
+      <div class="aviso-lateral">
+        ⚠️ Atenção<br><br>
+        Impressão Comum e Xerox<br>
+        estão temporariamente<br>
+        indisponíveis.
+      </div>
+    </div>
 
     <label class="strike">Xerox (Em manutenção)</label>
 
@@ -54,6 +67,7 @@
       <option value="cartao">Cartão de Visita</option>
       <option value="post">Post no Instagram</option>
       <option value="contrato">Contrato / Negociação</option>
+      <option value="logo">Logo</option>
     </select>
 
     <label for="arquivo">Enviar arquivo:</label>
@@ -68,7 +82,7 @@
     <label for="frete">Frete:</label>
     <select id="frete" onchange="mostrarLocalizacao()">
       <option value="0">Sem frete</option>
-      <option value="2">Com frete: R$ 2,00</option>
+      <option value="2">Com frete</option>
     </select>
 
     <div id="localizacao">
@@ -182,6 +196,7 @@ Serviço: ${pedido.servico}
 Frete: ${pedido.frete == '2' ? 'Sim' : 'Não'}
 Endereço: ${pedido.endereco}
 Enviar PDF: ${pedido.enviarPdf ? 'Sim' : 'Não'}
+⚠️ Impressão Comum e Xerox estão temporariamente indisponíveis
 Data: ${pedido.data} Horário: ${pedido.horario}`;
 
   setTimeout(() => {
