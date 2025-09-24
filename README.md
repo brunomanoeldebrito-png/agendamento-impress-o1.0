@@ -8,6 +8,7 @@
   body { font-family: Arial, sans-serif; background-color: #e0f7fa; margin: 0; padding: 0; }
   .container { max-width: 720px; margin: 40px auto; background: #ffffff; padding: 40px; border-radius: 16px; box-shadow: none; }
   h1 { text-align: center; font-size: 32px; margin-bottom: 25px; }
+  h2 { text-align: center; font-size: 24px; margin-bottom: 20px; color: #d32f2f; }
   label { display: block; margin: 15px 0 5px; font-weight: 600; }
   input[type=file], input[type=text], select, input[type=date] { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #bbb; box-sizing: border-box; font-size: 16px; }
   .checkbox { display: flex; align-items: center; margin-top: 12px; }
@@ -16,6 +17,7 @@
   .button:hover { background: #00838f; }
   .strike { text-decoration: line-through; color: #d32f2f; font-weight: bold; font-size: 16px; margin-top: 10px; }
   .note { font-size: 13px; color: #555; margin-top: 6px; }
+  .aviso { color: #d32f2f; font-weight: bold; font-size: 15px; margin-top: 15px; text-align: center; }
   table { width: 100%; border-collapse: collapse; margin-top: 15px; }
   table, th, td { border: 1px solid #bbb; }
   th, td { padding: 10px; text-align: center; }
@@ -26,16 +28,34 @@
 <body>
 <div class="container" id="container">
   <div id="etapa1">
+    <h2>🎉 Super Promoção 🎉</h2>
     <h1>Impressão Rápida</h1>
 
     <table>
       <thead><tr><th>Serviço</th><th>Preço</th></tr></thead>
       <tbody>
-        <tr><td>Impressão Comum</td><td>R$ 3,50</td></tr>
+        <tr><td class="strike">Impressão Comum</td><td class="strike">R$ 3,50</td></tr>
+        <tr><td>Site Básico <br><small>(Obs: sem logo)</small></td><td>R$ 250,00</td></tr>
+        <tr><td>Cartão de Visita</td><td>R$ 100,00</td></tr>
+        <tr><td>Post no Instagram</td><td>R$ 30,00</td></tr>
+        <tr><td>Contrato / Negociação</td><td>—</td></tr>
       </tbody>
     </table>
 
+    <p class="aviso">⚠️ Impressão Comum e Xerox estão temporariamente indisponíveis.</p>
+
     <label class="strike">Xerox (Em manutenção)</label>
+
+    <label for="servico">Escolha o serviço:</label>
+    <select id="servico" required>
+      <option value="">Selecione...</option>
+      <option value="impressao" disabled>Impressão Comum (Indisponível)</option>
+      <option value="site">Site Básico (sem logo)</option>
+      <option value="cartao">Cartão de Visita</option>
+      <option value="post">Post no Instagram</option>
+      <option value="contrato">Contrato / Negociação</option>
+    </select>
+
     <label for="arquivo">Enviar arquivo:</label>
     <input type="file" id="arquivo">
 
@@ -79,13 +99,16 @@ function mostrarLocalizacao() {
 function proximaEtapa() {
   const nome = document.getElementById('nome').value.trim();
   const telefone = document.getElementById('telefone').value.trim();
-  if (!nome || !telefone) {
-    alert('Por favor, preencha Nome e Telefone.');
+  const servico = document.getElementById('servico').value;
+
+  if (!nome || !telefone || !servico) {
+    alert('Por favor, preencha Nome, Telefone e Serviço.');
     return;
   }
 
   pedido.nome = nome;
   pedido.telefone = telefone;
+  pedido.servico = servico;
   pedido.enviarPdf = document.getElementById('enviarPdf').checked;
   pedido.frete = document.getElementById('frete').value;
   pedido.endereco = document.getElementById('endereco') ? document.getElementById('endereco').value : '';
@@ -152,7 +175,14 @@ function finalizarAgendamento() {
   pedido.data = data;
   pedido.horario = horario;
 
-  const resumo = `Resumo do pedido:\nNome: ${pedido.nome}\nTelefone: ${pedido.telefone}\nFrete: ${pedido.frete == '2' ? 'Sim' : 'Não'}\nEndereço: ${pedido.endereco}\nEnviar PDF: ${pedido.enviarPdf ? 'Sim' : 'Não'}\nData: ${pedido.data} Horário: ${pedido.horario}`;
+  const resumo = `Resumo do pedido:
+Nome: ${pedido.nome}
+Telefone: ${pedido.telefone}
+Serviço: ${pedido.servico}
+Frete: ${pedido.frete == '2' ? 'Sim' : 'Não'}
+Endereço: ${pedido.endereco}
+Enviar PDF: ${pedido.enviarPdf ? 'Sim' : 'Não'}
+Data: ${pedido.data} Horário: ${pedido.horario}`;
 
   setTimeout(() => {
     const numeroWhatsApp = '5571982513027';
