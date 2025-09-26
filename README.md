@@ -48,7 +48,7 @@
         </tbody>
       </table>
 
-      <!-- Aviso do lado -->
+      <!-- Aviso cima -->
       <div class="aviso-lateral">
         ⚠️ Atenção<br><br>
         Impressão Comum e Xerox<br>
